@@ -4,13 +4,14 @@ from __future__ import annotations
 import zipfile
 from xml.etree import ElementTree as ET
 
-from .manifest import Manifest, parse_manifest
-
-SUPPORTED_VERSIONS = {"1.2", "2004 3rd Edition", "2004 4th Edition", "CAM 1.3"}
+from .manifest import Manifest, parse_manifest, SUPPORTED_VERSIONS
 
 
 def validate_package(zip_path: str) -> tuple[list[dict], Manifest | None]:
+    """Open a SCORM .zip, run all QA checks, return defect list + parsed manifest."""
     defects: list[dict] = []
+    manifest: Manifest | None = None
+
     try:
         zf = zipfile.ZipFile(zip_path)
     except zipfile.BadZipFile:
@@ -21,6 +22,7 @@ def validate_package(zip_path: str) -> tuple[list[dict], Manifest | None]:
     names = zf.namelist()
     name_set = set(names)
 
+    # Rule: imsmanifest.xml must exist at root
     if "imsmanifest.xml" not in name_set:
         defects.append({
             "severity": "CRITICAL", "category": "package",
@@ -29,6 +31,7 @@ def validate_package(zip_path: str) -> tuple[list[dict], Manifest | None]:
         })
         return defects, None
 
+    # Parse manifest
     try:
         manifest = parse_manifest(zf.read("imsmanifest.xml"))
     except ET.ParseError as e:
@@ -39,11 +42,44 @@ def validate_package(zip_path: str) -> tuple[list[dict], Manifest | None]:
         })
         return defects, None
 
-    if not manifest.schemaversion or manifest.schemaversion not in SUPPORTED_VERSIONS:
+    # Rule: schemaversion supported
+    if not manifest.schemaversion:
+        defects.append({
+            "severity": "HIGH", "category": "manifest",
+            "location": "imsmanifest.xml/schemaversion",
+            "message": "schemaversion element is missing",
+        })
+    elif manifest.schemaversion not in SUPPORTED_VERSIONS:
         defects.append({
             "severity": "CRITICAL", "category": "manifest",
             "location": "imsmanifest.xml/schemaversion",
-            "message": f"schemaversion '{manifest.schemaversion}' is not supported",
+            "message": f"schemaversion '{manifest.schemaversion}' is not supported "
+                       f"(expected one of: {sorted(SUPPORTED_VERSIONS)})",
         })
+
+    # Rule: at least one organization
+    if manifest.organizations_count == 0:
+        defects.append({
+            "severity": "HIGH", "category": "manifest",
+            "location": "imsmanifest.xml/organizations",
+            "message": "No <organization> elements found",
+        })
+
+    # Rule: each resource href must reference an existing file
+    referenced_files: set[str] = set()
+    has_launch = False
+    for r in manifest.resources:
+        if r.scormtype == "sco":
+            has_launch = True
+        for file_ref in r.files + ([r.href] if r.href else []):
+            if not file_ref:
+                continue
+            referenced_files.add(file_ref)
+            if file_ref not in name_set:
+                defects.append({
+                    "severity": "HIGH", "category": "resources",
+                    "location": file_ref,
+                    "message": f"Referenced by manifest but missing from package",
+                })
 
     return defects, manifest
