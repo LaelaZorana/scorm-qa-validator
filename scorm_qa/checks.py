@@ -82,4 +82,25 @@ def validate_package(zip_path: str) -> tuple[list[dict], Manifest | None]:
                     "message": f"Referenced by manifest but missing from package",
                 })
 
+    # Rule: at least one SCO launch resource
+    if manifest.resources and not has_launch:
+        defects.append({
+            "severity": "MEDIUM", "category": "resources",
+            "location": "imsmanifest.xml/resources",
+            "message": "No resource with scormtype='sco' — package has no launchable SCO",
+        })
+
+    # Rule: dangling files in package
+    for n in names:
+        if n.endswith("/") or n == "imsmanifest.xml":
+            continue
+        if n.startswith("__MACOSX"):
+            continue
+        if n not in referenced_files:
+            defects.append({
+                "severity": "LOW", "category": "resources",
+                "location": n,
+                "message": "File present in package but not referenced by manifest",
+            })
+
     return defects, manifest
