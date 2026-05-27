@@ -21,7 +21,7 @@ Severity tags: **CRITICAL** (won't even load), **HIGH** (will load but break), *
 pip install -r requirements.txt
 ```
 
-Requires Python 3.10+. The only third-party dep is `lxml` (more forgiving on real-world manifests than the stdlib `ElementTree`, in my experience — though we actually use ElementTree right now; lxml is a planned switch, see TODO).
+Requires Python 3.9+. No third-party dependencies — uses stdlib `xml.etree.ElementTree` for manifest parsing, so it installs cleanly anywhere without extra packages.
 
 ## Use
 
@@ -80,3 +80,7 @@ tests/
 ## License
 
 MIT.
+
+---
+
+**Links:** [GitHub](https://github.com/LaelaZorana) · [HuggingFace](https://huggingface.co/LaelaZ) · [Kaggle](https://www.kaggle.com/laelazorana)
