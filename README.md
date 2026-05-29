@@ -1,5 +1,7 @@
 # scorm-qa-validator
 
+**🔗 Live demo:** [try it on Hugging Face Spaces](https://huggingface.co/spaces/LaelaZ/scorm-qa-validator) — upload a `.zip` or click a built-in sample and see the defect log.
+
 Validates SCORM 1.2 / 2004 packages from the command line. Made because I got tired of uploading a `.zip` to an LMS staging environment, waiting two minutes, and only then finding out the manifest pointed at a file that wasn't actually in the package.
 
 ## What it checks
