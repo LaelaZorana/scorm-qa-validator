@@ -2,7 +2,7 @@
 title: SCORM QA Validator
 emoji: 📦
 colorFrom: green
-colorTo: teal
+colorTo: blue
 sdk: gradio
 app_file: app.py
 pinned: false
