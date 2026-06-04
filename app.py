@@ -5,7 +5,7 @@ SCORM packages fail silently on LMS upload. A missing launch file or a wrong
 schema version does not throw an error, it just shows the learner a blank screen
 after the package goes live. This tool unzips the package, parses imsmanifest.xml,
 and hands you a pre-flight defect log (severity, location, fix) before it ever
-ships to Docebo, Workday, or Cornerstone.
+reaches Docebo, Workday, or Cornerstone.
 
 The result is drawn as fully custom HTML into a single gr.HTML panel: a big
 verdict card that says whether the package would pass or break, then the defects
@@ -117,7 +117,7 @@ def _all_clear() -> str:
       <div class="sc-clear-icon">✓</div>
       <div class="sc-clear-text">All checks passed</div>
       <div class="sc-clear-sub">Manifest parses, schema version is supported, every
-        referenced file is present, and nothing is orphaned. Safe to ship.</div>
+        referenced file is present, and nothing is orphaned. Safe to deploy.</div>
     </div>
     """
 
@@ -309,7 +309,7 @@ with gr.Blocks(title="SCORM QA Validator", theme=theme, css=CSS) as demo:
         "<p>SCORM packages fail silently. A missing launch file or a wrong schema version "
         "does not throw an error, it just shows the learner a blank screen. This tool opens "
         "the package, parses <code>imsmanifest.xml</code>, and hands you a defect log "
-        "before it ships to Docebo, Workday, or Cornerstone.</p></div>"
+        "before it reaches Docebo, Workday, or Cornerstone.</p></div>"
     )
 
     with gr.Tab("Try a built-in sample"):
