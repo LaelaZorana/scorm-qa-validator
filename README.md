@@ -1,6 +1,6 @@
 # scorm-qa-validator
 
-**🔗 Live demo:** [try it on Hugging Face Spaces](https://huggingface.co/spaces/LaelaZ/scorm-qa-validator) — upload a `.zip` or click a built-in sample and see the defect log.
+**🔗 Live demo:** [try it on Hugging Face Spaces](https://huggingface.co/spaces/LaelaZ/scorm-qa-validator). Upload a `.zip` or click a built-in sample and see the defect log.
 
 Validates SCORM 1.2 / 2004 packages from the command line. Made because I got tired of uploading a `.zip` to an LMS staging environment, waiting two minutes, and only then finding out the manifest pointed at a file that wasn't actually in the package.
 
@@ -13,7 +13,7 @@ Validates SCORM 1.2 / 2004 packages from the command line. Made because I got ti
 - At least one `<organization>` exists
 - Every `href` referenced by a `<resource>` actually exists in the package
 - At least one resource has `scormtype="sco"` (otherwise nothing's launchable)
-- Files in the zip that the manifest never references (dangling assets — usually leftover working files)
+- Files in the zip that the manifest never references (dangling assets, usually leftover working files)
 
 Severity tags: **CRITICAL** (won't even load), **HIGH** (will load but break), **MEDIUM** (loads, missing features), **LOW** (cosmetic, e.g. dead files).
 
@@ -23,7 +23,7 @@ Severity tags: **CRITICAL** (won't even load), **HIGH** (will load but break), *
 pip install -r requirements.txt
 ```
 
-Requires Python 3.9+. No third-party dependencies — uses stdlib `xml.etree.ElementTree` for manifest parsing, so it installs cleanly anywhere without extra packages.
+Requires Python 3.9+. There are no third-party dependencies because it uses the stdlib `xml.etree.ElementTree` for manifest parsing, so it installs cleanly anywhere without extra packages.
 
 ## Use
 
@@ -59,13 +59,13 @@ And the report:
 pytest -v
 ```
 
-The test suite builds SCORM packages in `tmp_path` (using `zipfile` and the standard "good" manifest as a base) and asserts that each defect class is detected. No real `.zip` files are checked in — the fixtures build them on the fly so the test directory stays small.
+The test suite builds SCORM packages in `tmp_path` (using `zipfile` and the standard "good" manifest as a base) and asserts that each defect class is detected. No real `.zip` files are checked in, because the fixtures build them on the fly so the test directory stays small.
 
 ## Why I made this
 
-My background is L&D and LMS administration (Docebo, Workday). SCORM packages fail in really annoying ways — silent failures, "course loaded but tracking doesn't work," and so on. I wanted a quick smoke test I could run locally before uploading anything. Most of the open-source SCORM tools I found were either authoring tools (Articulate-adjacent) or full LMS engines — nothing as small as "tell me what's wrong with this zip."
+My background is L&D and LMS administration (Docebo, Workday), and SCORM packages fail in really annoying ways: silent failures, "course loaded but tracking doesn't work," and so on. I wanted a quick smoke test I could run locally before uploading anything, but most of the open-source SCORM tools I found were either authoring tools (Articulate-adjacent) or full LMS engines, nothing as small as "tell me what's wrong with this zip."
 
-It's not a replacement for an actual conformance test against SCORM ADL test suites — it's a sanity check.
+It's not a replacement for an actual conformance test against SCORM ADL test suites. It's a sanity check.
 
 ## Layout
 
