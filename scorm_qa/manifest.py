@@ -56,7 +56,7 @@ def parse_manifest(xml_bytes: bytes) -> Manifest:
         tag = elem.tag.split("}")[-1]
         if tag != "resource":
             continue
-        # attributes — scormtype lives in adlcp namespace
+        # attributes, scormtype lives in adlcp namespace
         scormtype = None
         for attr_key, attr_val in elem.attrib.items():
             if attr_key.endswith("scormtype") or attr_key == "scormtype":

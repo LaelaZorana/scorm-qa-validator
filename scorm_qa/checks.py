@@ -87,7 +87,7 @@ def validate_package(zip_path: str) -> tuple[list[dict], Manifest | None]:
         defects.append({
             "severity": "MEDIUM", "category": "resources",
             "location": "imsmanifest.xml/resources",
-            "message": "No resource with scormtype='sco' — package has no launchable SCO",
+            "message": "No resource with scormtype='sco', package has no launchable SCO",
         })
 
     # Rule: dangling files in package
