@@ -9,7 +9,7 @@ Random things I learned/decided while writing this:
   only. Not ideal, but robust.
 
 - **`scormtype` attribute:** This lives under the ADLCP namespace and the
-  namespace URI changed between SCORM 1.2 and 2004. Same trick as above —
+  namespace URI changed between SCORM 1.2 and 2004. Same trick as above,
   I just check if any attribute key *ends with* `scormtype`.
 
 - **Why not validate against the official SCORM XSDs?** The XSDs are

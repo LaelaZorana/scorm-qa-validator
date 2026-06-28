@@ -42,15 +42,15 @@ FAIL  bad_package.zip  defects=3  -> reports/bad_package_report.md
 And the report:
 
 ```markdown
-# SCORM QA Report — `bad_package.zip`
+# SCORM QA Report: `bad_package.zip`
 
 **Verdict:** FAIL
 **Defects:** 3
 
 ## Defects
-- **[CRITICAL]** `imsmanifest.xml/schemaversion` — schemaversion '1.1' is not supported
-- **[HIGH]** `resources/lesson.htm` — referenced by manifest but missing from package
-- **[LOW]** `extras/notes.txt` — present in package but not referenced by manifest
+- **[CRITICAL]** `imsmanifest.xml/schemaversion`: schemaversion '1.1' is not supported
+- **[HIGH]** `resources/lesson.htm`: referenced by manifest but missing from package
+- **[LOW]** `extras/notes.txt`: present in package but not referenced by manifest
 ```
 
 ## Tests

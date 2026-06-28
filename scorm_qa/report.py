@@ -13,7 +13,7 @@ def build_markdown(zip_path: str, defects: list[dict]) -> str:
     verdict = "FAIL" if critical else ("PASS WITH WARNINGS" if defects else "PASS")
 
     lines: list[str] = []
-    lines.append(f"# SCORM QA Report — `{Path(zip_path).name}`")
+    lines.append(f"# SCORM QA Report: `{Path(zip_path).name}`")
     lines.append("")
     lines.append(f"**Verdict:** {verdict}")
     lines.append(f"**Defects:** {len(defects)}")
@@ -23,7 +23,7 @@ def build_markdown(zip_path: str, defects: list[dict]) -> str:
         lines.append("_No defects detected._")
     else:
         for d in sorted_d:
-            lines.append(f"- **[{d['severity']}]** `{d['location']}` — {d['message']}")
+            lines.append(f"- **[{d['severity']}]** `{d['location']}`: {d['message']}")
     lines.append("")
     return "\n".join(lines)
 
