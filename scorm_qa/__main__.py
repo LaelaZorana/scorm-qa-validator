@@ -18,8 +18,15 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if args.cmd == "validate":
-        defects, _ = validate_package(str(args.zip))
-        md, _ = write_reports(args.out, str(args.zip), defects)
+        try:
+            defects, _ = validate_package(str(args.zip))
+            md, _ = write_reports(args.out, str(args.zip), defects)
+        except FileNotFoundError:
+            print(f"error: {args.zip} does not exist", file=sys.stderr)
+            return 2
+        except (IsADirectoryError, PermissionError, OSError) as e:
+            print(f"error: cannot read {args.zip}: {e.strerror or e}", file=sys.stderr)
+            return 2
         critical = any(d["severity"] in ("CRITICAL", "HIGH") for d in defects)
         verdict = "FAIL" if critical else "PASS"
         print(f"{verdict}  {args.zip.name}  defects={len(defects)}  -> {md}")

@@ -88,3 +88,12 @@ def test_dangling_file_flagged_low(tmp_path):
     })
     defects, _ = validate_package(str(pkg))
     assert any("extras/notes.txt" in d["location"] and d["severity"] == "LOW" for d in defects)
+
+
+def test_cli_missing_zip_exits_cleanly(tmp_path, capsys):
+    from scorm_qa.__main__ import main
+    code = main(["validate", str(tmp_path / "nope.zip")])
+    captured = capsys.readouterr()
+    assert code == 2
+    assert "does not exist" in captured.err
+    assert "Traceback" not in captured.err

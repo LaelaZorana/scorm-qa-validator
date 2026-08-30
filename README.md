@@ -19,11 +19,11 @@ Severity tags: **CRITICAL** (won't even load), **HIGH** (will load but break), *
 
 ## Install
 
+Requires Python 3.9+. The validator itself runs on the standard library alone, with `xml.etree.ElementTree` for manifest parsing. The packages in `requirements.txt` cover the test suite (`pytest`) and the local Gradio demo (`app.py`), so one install covers everything.
+
 ```bash
 pip install -r requirements.txt
 ```
-
-Requires Python 3.9+. There are no third-party dependencies because it uses the stdlib `xml.etree.ElementTree` for manifest parsing, so it installs cleanly anywhere without extra packages.
 
 ## Use
 
@@ -65,7 +65,7 @@ The test suite builds SCORM packages in `tmp_path` (using `zipfile` and the stan
 
 My background is L&D and LMS administration (Docebo, Workday), and SCORM packages fail in really annoying ways: silent failures, "course loaded but tracking doesn't work," and so on. I wanted a quick smoke test I could run locally before uploading anything, but most of the open-source SCORM tools I found were either authoring tools (Articulate-adjacent) or full LMS engines, nothing as small as "tell me what's wrong with this zip."
 
-It's not a replacement for an actual conformance test against SCORM ADL test suites. It's a sanity check.
+Treat it as a quick sanity check, and run the SCORM ADL conformance suites when you need a full conformance result.
 
 ## Layout
 
@@ -82,7 +82,5 @@ tests/
 ## License
 
 MIT.
-
----
 
 **Links:** [GitHub](https://github.com/LaelaZorana) · [HuggingFace](https://huggingface.co/LaelaZ) · [Kaggle](https://www.kaggle.com/laelazorana)
